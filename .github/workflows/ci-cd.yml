@@ -1,8 +1,5 @@
 name: CI/CD Pipeline
 
-env:
-  ACTIONS_STEP_DEBUG: true
-
 on:
   push:
     branches:
@@ -68,9 +65,9 @@ jobs:
         run: |
           curl -X POST -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
           -H "Content-Type: application/json" \
-          -d '{"serviceId": "${{ secrets.RENDER_SERVICE_ID }}", "clearCache": true}' \
-          https://api.render.com/deploy
+          -d '{"clearCache": true}' \
+          https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}
 
       - name: Deploy documentation to Netlify
         run: |
-            netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
