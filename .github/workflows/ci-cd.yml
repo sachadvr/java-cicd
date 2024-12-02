@@ -16,6 +16,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
+          distribution: 'temurin'
 
       - name: Run unit tests
         run: ./mvnw test
@@ -39,6 +40,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '21'
+          distribution: 'temurin'
 
       - name: Build documentation
         run: ./mvnw javadoc:javadoc
@@ -72,4 +74,3 @@ jobs:
       - name: Deploy documentation to Netlify
         run: |
           netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
-
