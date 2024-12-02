@@ -45,6 +45,22 @@ jobs:
       - name: Build documentation
         run: ./mvnw javadoc:javadoc
 
+      - name: Verify Javadoc directory
+        run: |
+          if [ -d "target/reports/apidocs" ]; then
+            echo "Javadoc directory found:"
+            ls -l target/reports/apidocs
+          else
+            echo "Javadoc directory not found!"
+            exit 1
+          fi
+
+      - name: Upload Javadoc as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: javadoc
+          path: target/reports/apidocs
+
   deploy:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -61,13 +77,18 @@ jobs:
           docker build --platform linux/amd64 -t ${{ secrets.DOCKER_HUB_USERNAME }}/java-app:main .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/java-app:main
 
+      - name: Download Javadoc artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: javadoc
+
+      - name: Deploy documentation to Netlify
+        run: |
+          netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
+
       - name: Deploy to Render.com
         run: |
           curl -X POST -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d '{"clearCache": true}' \
           https://api.render.com/deploy/${{ secrets.RENDER_SERVICE_ID }}
-
-      - name: Deploy documentation to Netlify
-        run: |
-            netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
