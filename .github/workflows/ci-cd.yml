@@ -84,7 +84,7 @@ jobs:
 
       - name: Deploy documentation to Netlify
         run: |
-          netlify deploy --dir target/reports/apidocs --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
+          netlify deploy --dir javadoc --prod --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Deploy to Render.com
         run: |
