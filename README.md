@@ -12,10 +12,15 @@ The following commands should help you build and test your application.
 ./mvnw clean package
 ```
 
+The `.jar` file will be available in `target` directory. 
+
 ### Build the app without running tests
 ```bash
 ./mvnw clean package -DskipTests
 ```
+
+The `.jar` file will be available in `target` directory.
+
 
 ### Test the app
 ```bash
@@ -26,4 +31,11 @@ The following commands should help you build and test your application.
 ```bash
 ./mvnw spring-boot:run
 ```
+
+### Build the documentation
+```bash
+./mvnw javadoc:javadoc
+```
+
+The static site files will be available in `target/reports/apidocs`.
 

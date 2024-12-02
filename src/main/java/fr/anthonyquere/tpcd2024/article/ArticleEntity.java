@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Jpa entity representing an article in the database
+ */
 @Entity
 @Getter
 @Setter
